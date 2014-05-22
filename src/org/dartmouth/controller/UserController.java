@@ -76,7 +76,7 @@ public class UserController {
 			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
 					.value(result.isSuccess())
 					.key(GlobalVariables.RESPONSE_KEYS.USERID)
-					.value(result.getResultObj())
+					.value((Long) result.getResultObj())
 					.key(GlobalVariables.RESPONSE_KEYS.MSG)
 					.value(result.getMsg()).endObject();
 			response.getWriter().append(stringer.toString());
@@ -104,7 +104,7 @@ public class UserController {
 			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
 					.value(result.isSuccess())
 					.key(GlobalVariables.RESPONSE_KEYS.USERID)
-					.value(result.getResultObj())
+					.value((Long) result.getResultObj())
 					.key(GlobalVariables.RESPONSE_KEYS.MSG)
 					.value(result.getMsg()).endObject();
 			response.getWriter().append(stringer.toString());
