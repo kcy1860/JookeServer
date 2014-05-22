@@ -1,7 +1,11 @@
 package org.dartmouth.common;
 
 import java.lang.reflect.Method;
-
+/**
+ * 
+ * @author Yaozhong Kang
+ * @date   May 21, 2014
+ */
 public class CommonUtils {
 
 	/**

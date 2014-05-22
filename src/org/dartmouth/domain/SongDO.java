@@ -1,7 +1,10 @@
 package org.dartmouth.domain;
 
 import java.io.Serializable;
-
+/**
+ * @author Yaozhong Kang
+ * @date   May 21, 2014
+ */
 public class SongDO extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 7042392106765347538L;
