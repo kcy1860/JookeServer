@@ -13,7 +13,7 @@ import org.dartmouth.domain.UserDO;
 public interface UserService {
 	Result addUser(UserDO user);
 
-	boolean login(String usr, String pwd);
+	Result login(String usr, String pwd);
 
 	List<UserDO> findUser(Map<String, Object> query);
 }

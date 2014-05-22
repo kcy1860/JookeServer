@@ -9,4 +9,6 @@ public interface Settings {
 		static final int facebook = 1;
 		static final int twitter = 2;
 	}
+	
+	
 }

@@ -7,14 +7,14 @@ import java.util.Date;
  * @author Yaozhong Kang
  * @date May 20, 2014
  */
-public class UserDO implements Serializable {
+public class UserDO extends BaseDO implements Serializable {
 	private static final long serialVersionUID = 6978089255719569084L;
 	private Long id;
-	private Long third_party_id;
-	private Integer tag;
-	private String name;
+	private Long thirdparty_id;
+	private Integer signup_type;
+	private String fullname;
 	private String email;
-	private String pwd;
+	private String password;
 	private Boolean gender;
 	private String profile_img;
 	private String twitter_link;
@@ -31,28 +31,28 @@ public class UserDO implements Serializable {
 		this.id = id;
 	}
 
-	public Long getThird_party_id() {
-		return third_party_id;
+	public Long getThirdparty_id() {
+		return thirdparty_id;
 	}
 
-	public void setThird_party_id(Long third_party_id) {
-		this.third_party_id = third_party_id;
+	public void setThirdparty_id(Long thirdparty_id) {
+		this.thirdparty_id = thirdparty_id;
 	}
 
-	public Integer getTag() {
-		return tag;
+	public Integer getSignup_type() {
+		return signup_type;
 	}
 
-	public void setTag(Integer tag) {
-		this.tag = tag;
+	public void setSignup_type(Integer signup_type) {
+		this.signup_type = signup_type;
 	}
 
-	public String getName() {
-		return name;
+	public String getFullname() {
+		return fullname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 
 	public String getEmail() {
@@ -63,12 +63,12 @@ public class UserDO implements Serializable {
 		this.email = email;
 	}
 
-	public String getPwd() {
-		return pwd;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Boolean getGender() {

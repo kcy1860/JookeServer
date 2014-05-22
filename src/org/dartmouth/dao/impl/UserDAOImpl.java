@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.dao.UserDAO;
 import org.dartmouth.domain.UserDO;
@@ -33,26 +34,30 @@ public class UserDAOImpl implements UserDAO {
 		Result result = new Result();
 		// check for duplicate
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (user.getThird_party_id() != null) {
-			map.put("third_party_id", user.getThird_party_id());
+		if (user.getThirdparty_id() != null) {
+			map.put("third_party_id", user.getThirdparty_id());
 		} else {
 			map.put("email", user.getEmail());
 		}
 		List<UserDO> list = query(map);
 		if (list.size() > 0) {
 			result.setSuccess(false);
-			result.setMsg("Duplicate Error");
+			result.setResultObj(-1);
+			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.SIGN_UP_DUPLICATE);
 			return result;
 		}
-		String inserQuery = "insert into user (name,email,password,profile_img,tags,third_party_id,last_modified,created_at) values (?,?, ?, ?, ?, ?,NOW(), NOW()) ";
-		Object[] params = new Object[] { user.getName(), user.getEmail(),
-				user.getPwd(), user.getProfile_img(), user.getTag(),
-				user.getThird_party_id() };
+		String inserQuery = "insert into user (name,email,password,profile_img,signup_type,third_party_id,last_modified,created_at) values (?,?, ?, ?, ?, ?,NOW(), NOW()) ";
+		Object[] params = new Object[] { user.getFullname(), user.getEmail(),
+				user.getPassword(), user.getProfile_img(),
+				user.getSignup_type(), user.getThirdparty_id() };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 				Types.VARCHAR, Types.INTEGER, Types.INTEGER };
+
 		result.setSuccess(jdbcTemplate.update(inserQuery, params, types) == 1);
-		result.setResultObj(result.isSuccess());
-		result.setMsg(result.isSuccess() ? null : "DB Error");
+		list = query(map);
+		result.setResultObj(list.get(0).getId());
+		result.setMsg(result.isSuccess() ? null
+				: GlobalVariables.RESPONSE_MESSAGES.DB_ERROR);
 		return result;
 	}
 
@@ -93,11 +98,11 @@ public class UserDAOImpl implements UserDAO {
 							u.setId(rs.getLong("id"));
 							u.setInstagram_link(rs.getString("instagramlink"));
 							u.setLast_modified(rs.getDate("last_modified"));
-							u.setName(rs.getString("name"));
+							u.setFullname(rs.getString("name"));
 							u.setProfile_img(rs.getString("profile_img"));
-							u.setPwd(rs.getString("password"));
-							u.setTag(rs.getInt("tags"));
-							u.setThird_party_id(rs.getLong("third_party_id"));
+							u.setPassword(rs.getString("password"));
+							u.setSignup_type(rs.getInt("signup_type"));
+							u.setThirdparty_id(rs.getLong("third_party_id"));
 							u.setTwitter_link(rs.getString("twitterlink"));
 							list.add(u);
 						}

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.dao.UserDAO;
 import org.dartmouth.domain.UserDO;
@@ -24,21 +25,31 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Result addUser(UserDO user) {
-		// TODO check whether the user has enough attributes
 		Result result = this.userDAO.insertUser(user);
 		return result;
 	}
 
 	@Override
-	public boolean login(String email, String pwd) {
+	public Result login(String email, String pwd) {
+		Result result = new Result();
 		if (email == null || pwd == null) {
-			return false;
+			result.setSuccess(false);
+			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.LOGIN_FAIL);
+			return result;
 		}
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("email", email);
 		queryMap.put("password", pwd);
 		List<UserDO> users = findUser(queryMap);
-		return users.size() > 0;
+		if (users.size() > 0) {
+			result.setSuccess(true);
+			result.setResultObj(users.get(0).getId());
+		} else {
+			result.setSuccess(false);
+			result.setResultObj(-1);
+			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.LOGIN_FAIL);
+		}
+		return result;
 	}
 
 	@Override

@@ -19,7 +19,6 @@ public class BaseController {
 			HttpServletResponse response) throws Exception {
 		String user = request.getParameter("user");
 		user = user == null ? "World" : user;
-		// response.getWriter().append(user);
 		response.getWriter().write("Hello " + user);
 	}
 }

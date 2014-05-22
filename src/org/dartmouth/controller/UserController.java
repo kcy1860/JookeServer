@@ -31,26 +31,37 @@ public class UserController {
 	@RequestMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		JSONStringer stringer = new JSONStringer();
 		try {
 			int loginType = Integer.valueOf(request.getParameter("login_type"));
-			JSONStringer stringer = new JSONStringer();
+
 			// if is login using third party account
 			if (loginType != 0) {
 				Long third_party_id = Long.valueOf(request
 						.getParameter("thirdparty_id"));
-				String name = request.getParameter("fullname");
-				String profile_img = request.getParameter("profile_img");
-
 				Map<String, Object> query = new HashMap<String, Object>();
 				query.put("third_party_id", third_party_id);
+				query.put("signup_type", loginType);
+
 				List<UserDO> users = this.userService.findUser(query);
-				// if it is the first time the user login
-				// then create a profile for him
+				// if it is the first time the user login, then create a new
+				// profile
 				if (users.size() == 0) {
 					UserDO user = new UserDO();
-					user.setThird_party_id(third_party_id);
-					user.setName(name);
-					user.setProfile_img(profile_img);
+					user.fillByRequest(request);
+					user.setSignup_type(loginType);
+
+					if (user.getThirdparty_id() == null
+							|| user.getFullname() == null
+							|| user.getProfile_img() == null) {
+						stringer.object()
+								.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+								.value(false)
+								.key(GlobalVariables.RESPONSE_KEYS.MSG)
+								.value("Fail to add user").endObject();
+						response.getWriter().append(stringer.toString());
+						return;
+					}
 					this.userService.addUser(user);
 				}
 				stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
@@ -61,52 +72,50 @@ public class UserController {
 			String email = request.getParameter("email");
 			String pwd = request.getParameter("password");
 
-			boolean result = userService.login(email, pwd);
+			Result result = userService.login(email, pwd);
 			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
-					.value(result).endObject();
+					.value(result.isSuccess())
+					.key(GlobalVariables.RESPONSE_KEYS.USERID)
+					.value(result.getResultObj())
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(result.getMsg()).endObject();
 			response.getWriter().append(stringer.toString());
 		} catch (Exception e) {
-			response.getWriter().append("invalid parameters");
+			stringer.object()
+					.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(false)
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(GlobalVariables.RESPONSE_MESSAGES.INVALID_PARAMETERS)
+					.endObject();
+			response.getWriter().append(stringer.toString());
 		}
 	}
 
 	@RequestMapping(value = "/signup")
 	public void signup(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		JSONStringer stringer = new JSONStringer();
 		try {
-			Integer type = Integer.valueOf(request.getParameter("signup_type"));
-			String str_thirdparty_id = request.getParameter("thirdparty_id");
-			Long thirdparty_id = str_thirdparty_id == null ? null : Long
-					.valueOf(str_thirdparty_id);
-			String email = request.getParameter("email");
-			if (email == null && thirdparty_id == null) {
-				throw new Exception("invalid parameters");
-			}
-			String pwd = request.getParameter("password");
-			String name = request.getParameter("fullname");
-			String profile_img = request.getParameter("profile_img");
 			UserDO user = new UserDO();
-			user.setTag(type);
-			user.setThird_party_id(thirdparty_id);
-			user.setEmail(email);
-			user.setPwd(pwd);
-			user.setName(name);
-			user.setProfile_img(profile_img);
-			
-			Result result = userService.addUser(user);
-			JSONStringer stringer = new JSONStringer();
+			user.fillByRequest(request);
+			// TODO need to validate the parameters
 
-			if (result.isSuccess()) {
-				stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
-						.value(true).endObject();
-			} else {
-				stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
-						.value(false).key(GlobalVariables.RESPONSE_KEYS.MSG)
-						.value(result.getMsg()).endObject();
-			}
+			Result result = userService.addUser(user);
+			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(result.isSuccess())
+					.key(GlobalVariables.RESPONSE_KEYS.USERID)
+					.value(result.getResultObj())
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(result.getMsg()).endObject();
 			response.getWriter().append(stringer.toString());
 		} catch (Exception e) {
-			response.getWriter().append("invalid parameters");
+			stringer.object()
+					.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(false)
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(GlobalVariables.RESPONSE_MESSAGES.INVALID_PARAMETERS)
+					.endObject();
+			response.getWriter().append(stringer.toString());
 		}
 	}
 
@@ -123,7 +132,6 @@ public class UserController {
 			}
 			response.getWriter().append(buffer.toString());
 		} catch (Exception e) {
-			response.getWriter().append("invalid parameters:");
 		}
 	}
 }
