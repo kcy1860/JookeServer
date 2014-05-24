@@ -35,6 +35,7 @@ public class UserDAOImpl implements UserDAO {
 		// check for duplicate
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (user.getThirdparty_id() != null) {
+			map.put("signup_type", user.getSignup_type());
 			map.put("third_party_id", user.getThirdparty_id());
 		} else {
 			map.put("email", user.getEmail());
@@ -54,10 +55,15 @@ public class UserDAOImpl implements UserDAO {
 				Types.VARCHAR, Types.INTEGER, Types.INTEGER };
 
 		result.setSuccess(jdbcTemplate.update(inserQuery, params, types) == 1);
-		list = query(map);
-		result.setResultObj(list.get(0).getId());
-		result.setMsg(result.isSuccess() ? null
-				: GlobalVariables.RESPONSE_MESSAGES.DB_ERROR);
+		if (result.isSuccess()) {
+			list = query(map);
+			result.setResultObj(list.get(0).getId());
+			result.setMsg(result.isSuccess() ? null
+					: GlobalVariables.RESPONSE_MESSAGES.DB_ERROR);
+		} else {
+			result.setMsg(result.isSuccess() ? null
+					: GlobalVariables.RESPONSE_MESSAGES.DB_ERROR);
+		}
 		return result;
 	}
 

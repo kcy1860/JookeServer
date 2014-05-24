@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.dartmouth.common.CommonUtils;
 import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.domain.UserDO;
@@ -119,19 +118,4 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/listusers")
-	public void list(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		try {
-			List<UserDO> list = this.userService
-					.findUser(new HashMap<String, Object>());
-			StringBuffer buffer = new StringBuffer();
-			for (UserDO u : list) {
-				buffer.append(CommonUtils.testObj2String(u));
-				buffer.append("\n");
-			}
-			response.getWriter().append(buffer.toString());
-		} catch (Exception e) {
-		}
-	}
 }

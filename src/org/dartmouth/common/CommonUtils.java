@@ -1,22 +1,22 @@
 package org.dartmouth.common;
 
 import java.lang.reflect.Method;
+
 /**
  * 
  * @author Yaozhong Kang
- * @date   May 21, 2014
+ * @date May 21, 2014
  */
 public class CommonUtils {
 
 	/**
-	 * A function used to test
-	 * Serialize an object into an string, output all of the results
-	 * of public getter functions
+	 * A function used to test Serialize an object into an string, output all of
+	 * the results of public getter functions
 	 * 
-	 * @param o 
+	 * @param o
 	 * @return
 	 */
-	public static String testObj2String(Object o) {
+	public static String testObj2String(Object o, String... name) {
 		StringBuffer buffer = new StringBuffer();
 		try {
 			Class<? extends Object> c = o.getClass();
@@ -27,12 +27,28 @@ public class CommonUtils {
 					Object k = m.invoke(o, new Object[] {});
 					buffer.append(functionName.substring(3));
 					buffer.append(":");
-					buffer.append(k==null?"null":k.toString());
+					buffer.append(k == null ? "null" : k.toString());
 					buffer.append(" ");
 				}
 			}
 		} catch (Exception e) {
 		}
 		return buffer.toString();
+	}
+
+	public static float distFrom(float lat1, float lng1, float lat2, float lng2) {
+		double earthRadius = 3958.75;
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lng2 - lng1);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+				+ Math.cos(Math.toRadians(lat1))
+				* Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2)
+				* Math.sin(dLng / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double dist = earthRadius * c;
+
+		int meterConversion = 1609;
+
+		return (float) (dist * meterConversion);
 	}
 }

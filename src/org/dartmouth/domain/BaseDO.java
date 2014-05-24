@@ -27,13 +27,14 @@ public class BaseDO implements Serializable {
 		Class<? extends BaseDO> bc = this.getClass();
 		Field[] fields = bc.getDeclaredFields();
 		for (Field f : fields) {
+			f.setAccessible(true);
 			try {
 				Object obj = map.get(f.getName());
 				if (obj == null) {
 					continue;
 				}
 				String value = String.valueOf(obj);
-				f.setAccessible(true);
+
 				if (f.getType() == Integer.class) {
 					f.set(this, Integer.valueOf(value));
 				} else if (f.getType() == Boolean.class) {
@@ -59,12 +60,12 @@ public class BaseDO implements Serializable {
 		Class<? extends BaseDO> bc = this.getClass();
 		Field[] fields = bc.getDeclaredFields();
 		for (Field f : fields) {
+			f.setAccessible(true);
 			try {
 				String value = request.getParameter(f.getName());
 				if (value == null) {
 					continue;
 				}
-				f.setAccessible(true);
 				if (f.getType() == Integer.class) {
 					f.set(this, Integer.valueOf(value));
 				} else if (f.getType() == Boolean.class) {

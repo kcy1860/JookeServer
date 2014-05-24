@@ -22,7 +22,7 @@ public class UserDO extends BaseDO implements Serializable {
 	private String facebook_link;
 	private Date last_modified;
 	private Date created_at;
-
+	
 	public Long getId() {
 		return id;
 	}
