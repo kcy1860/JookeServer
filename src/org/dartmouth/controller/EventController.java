@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.domain.EventDO;
 import org.dartmouth.domain.ParticipantDO;
@@ -26,7 +27,9 @@ public class EventController {
 
 	@Autowired
 	private EventService eventService;
-
+	
+	static Logger logger = Logger.getLogger(EventController.class.getName());
+	
 	@RequestMapping(value = "/create_event")
 	public void create_event(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -44,6 +47,46 @@ public class EventController {
 
 			ParticipantDO part = new ParticipantDO();
 			part.setHost_ip(host_ip);
+			part.setId(host_id);
+			part.setProfile_img(profile_img);
+			part.setName(name);
+
+			this.eventService.addEventByUser(event, part);
+
+			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(true).key(GlobalVariables.RESPONSE_KEYS.EVENTID)
+					.value(event.getEvent_id().toString()).endObject();
+			response.getWriter().append(stringer.toString());
+		} catch (Exception e) {
+			stringer.object()
+					.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(false)
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(GlobalVariables.RESPONSE_MESSAGES.INVALID_PARAMETERS)
+					.endObject();
+			response.getWriter().append(stringer.toString());
+		}
+	}
+
+	@RequestMapping(value = "/create_event_pc")
+	public void create_event_pc(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		JSONStringer stringer = new JSONStringer();
+		try {
+			EventDO event = EventDO.getNewInstance();
+			event.fillByRequest(request);
+
+			// TODO if event is valid
+			event.setEvent_id(EventDO.incrementCount());
+			Long host_id = Long.valueOf(request.getParameter("host_id"));
+			String host_ip = request.getParameter("host_ip");
+			String profile_img = request.getParameter("host_profile_img");
+			String name = request.getParameter("host_name");
+
+			ParticipantDO part = new ParticipantDO();
+			// only different with
+			// part.setHost_ip(host_ip);
+			event.setPc_ip(host_ip);
 			part.setId(host_id);
 			part.setProfile_img(profile_img);
 			part.setName(name);

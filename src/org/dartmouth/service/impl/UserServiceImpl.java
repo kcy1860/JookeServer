@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.dao.UserDAO;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDAO userDAO;
 
+	static Logger logger = Logger.getLogger(UserServiceImpl.class
+			.getName());
+	
 	@Override
 	public Result addUser(UserDO user) {
 		Result result = this.userDAO.insertUser(user);

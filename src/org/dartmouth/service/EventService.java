@@ -1,5 +1,6 @@
 package org.dartmouth.service;
 
+import java.util.List;
 import java.util.PriorityQueue;
 
 import org.dartmouth.domain.EventDO;
@@ -12,9 +13,15 @@ import org.dartmouth.domain.ParticipantDO;
 public interface EventService {
 	public void addEventByUser(EventDO event, ParticipantDO p);
 
-	public PriorityQueue<EventDO> getNearByEvents(float lat, float lon, String zip);
+	public PriorityQueue<EventDO> getNearByEvents(float lat, float lon,
+			String zip);
 
 	public EventDO getEvent(Long id);
-	
+
 	public EventDO deleteEvent(Long id);
+
+	/**** just for testing, it is dangerous in production environment ****/
+	public List<EventDO> getAll();
+
+	public void deleteAll();
 }

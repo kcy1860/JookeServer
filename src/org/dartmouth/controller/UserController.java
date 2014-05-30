@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.domain.UserDO;
@@ -26,6 +27,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	static Logger logger = Logger.getLogger(UserController.class.getName());
+	
 	// TODO @RequestMapping(method = RequestMethod.GET)
 	@RequestMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response)

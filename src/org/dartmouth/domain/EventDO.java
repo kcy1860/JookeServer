@@ -2,6 +2,8 @@ package org.dartmouth.domain;
 
 import java.io.Serializable;
 
+import org.dartmouth.common.Settings;
+
 /**
  * @author Yaozhong Kang
  * @date May 21, 2014
@@ -17,20 +19,18 @@ public class EventDO extends BaseDO implements Serializable {
 	private String event_zip_code;
 	private Long event_time;
 	private Boolean allow_add;
-	
+
 	private Float lat;
 	private Float lon;
 	private String pc_ip;
 
 	private ParticipantDO host;
 
-	// private Map<Long, ParticipantDO> participant = new HashMap<Long,
-	// ParticipantDO>();
-	// private List<SongDO> playList = new LinkedList<SongDO>();
-
 	public static synchronized long incrementCount() {
-		// TODO refresh count
 		count++;
+		if (count == Settings.MAX_EVENT) {
+			count = 0;
+		}
 		return count;
 	}
 
@@ -126,6 +126,7 @@ public class EventDO extends BaseDO implements Serializable {
 	public void setLon(Float lon) {
 		this.lon = lon;
 	}
+
 	public Boolean getAllow_add() {
 		return allow_add;
 	}
@@ -133,6 +134,5 @@ public class EventDO extends BaseDO implements Serializable {
 	public void setAllow_add(Boolean allow_add) {
 		this.allow_add = allow_add;
 	}
-
 
 }

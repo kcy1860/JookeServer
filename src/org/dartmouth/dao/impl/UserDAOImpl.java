@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.dartmouth.common.GlobalVariables;
 import org.dartmouth.common.Result;
 import org.dartmouth.dao.UserDAO;
@@ -28,7 +29,10 @@ import org.springframework.stereotype.Repository;
 public class UserDAOImpl implements UserDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 
+	static Logger logger = Logger.getLogger(UserDAOImpl.class.getName());
+	
 	@Override
 	public Result insertUser(UserDO user) {
 		Result result = new Result();

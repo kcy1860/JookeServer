@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.dartmouth.cache.CacheManager;
+import org.apache.log4j.Logger;
 import org.dartmouth.common.CommonUtils;
 import org.dartmouth.domain.EventDO;
 import org.dartmouth.domain.UserDO;
@@ -28,10 +28,12 @@ public class TestController {
 	@Autowired
 	private UserService userService;
 
+	static Logger logger = Logger.getLogger(TestController.class.getName());
+
 	@RequestMapping(value = "/test/listevents")
 	public void lisete(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		List<EventDO> list = CacheManager.eventCache.getAll();
+		List<EventDO> list = eventService.getAll();
 		StringBuffer buffer = new StringBuffer();
 		for (EventDO e : list) {
 			buffer.append(CommonUtils.testObj2String(e));
@@ -63,7 +65,7 @@ public class TestController {
 	public void clear(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			CacheManager.eventCache.clearMemory();
+			this.eventService.deleteAll();
 			response.getWriter().append("done");
 		} catch (Exception e) {
 		}

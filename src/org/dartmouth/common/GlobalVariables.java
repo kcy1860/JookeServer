@@ -21,9 +21,4 @@ public interface GlobalVariables {
 		public static final String USER_NOT_EXIST = "User Doesn't Exist";
 	}
 	
-	public interface SIGN_UP_TYPE {
-		static final int normal = 0;
-		static final int facebook = 1;
-		static final int twitter = 2;
-	}
 }

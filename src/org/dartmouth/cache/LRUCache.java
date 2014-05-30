@@ -27,7 +27,7 @@ public class LRUCache implements Serializable {
 		if (obj == null) {
 			return null;
 		} else {
-			Object result = obj.val;
+			Object result = obj.getVal();
 			map.remove(key);
 			list.delete(obj);
 			return result;
@@ -40,7 +40,7 @@ public class LRUCache implements Serializable {
 			return null;
 		} else {
 			list.moveToHead(obj);
-			return obj.val;
+			return obj.getVal();
 		}
 	}
 
@@ -61,29 +61,37 @@ public class LRUCache implements Serializable {
 			obj = list.insert(new Node(value));
 			map.put(key, obj);
 		} else {
-			obj.val = value;
+			obj.setVal(value);
 			list.moveToHead(obj);
 		}
 	}
 
-	class Node {
-		Object val;
+	public class Node {
+		private Object val;
 		Node next;
 		Node previous;
 
 		Node(Object v) {
-			val = v;
+			setVal(v);
 			next = null;
 			previous = null;
 		}
+
+		public Object getVal() {
+			return val;
+		}
+
+		public void setVal(Object val) {
+			this.val = val;
+		}
 	}
 
-	class DoubleLinkedList {
+	public class DoubleLinkedList {
 		private Node head;
 		private Node tail;
 		private int length;
 
-		DoubleLinkedList() {
+		public DoubleLinkedList() {
 			length = 0;
 		}
 
