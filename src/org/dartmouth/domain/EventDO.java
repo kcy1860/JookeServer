@@ -16,7 +16,8 @@ public class EventDO extends BaseDO implements Serializable {
 	private Boolean event_mode;
 	private String event_zip_code;
 	private Long event_time;
-
+	private Boolean allow_add;
+	
 	private Float lat;
 	private Float lon;
 	private String pc_ip;
@@ -125,5 +126,13 @@ public class EventDO extends BaseDO implements Serializable {
 	public void setLon(Float lon) {
 		this.lon = lon;
 	}
+	public Boolean getAllow_add() {
+		return allow_add;
+	}
+
+	public void setAllow_add(Boolean allow_add) {
+		this.allow_add = allow_add;
+	}
+
 
 }

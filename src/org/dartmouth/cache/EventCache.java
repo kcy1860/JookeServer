@@ -15,6 +15,8 @@ import org.dartmouth.domain.EventDO;
  */
 public class EventCache extends LRUCache {
 
+	private static final long serialVersionUID = 73954831791646322L;
+
 	public EventCache(int capacity) {
 		super(capacity);
 		events = new HashMap<String, List<EventDO>>();

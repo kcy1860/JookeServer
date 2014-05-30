@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 			result.setResultObj(users.get(0).getId());
 		} else {
 			result.setSuccess(false);
-			result.setResultObj(-1);
+			result.setResultObj(-1L);
 			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.LOGIN_FAIL);
 		}
 		return result;
@@ -55,5 +55,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDO> findUser(Map<String, Object> query) {
 		return userDAO.query(query);
+	}
+
+	@Override
+	public Result update(UserDO user) {
+		Result result = new Result();
+		try {
+			int lines = this.userDAO.updateUser(user);
+			if (lines == 0) {
+				result.setSuccess(false);
+				result.setMsg(GlobalVariables.RESPONSE_MESSAGES.USER_NOT_EXIST);
+			} else {
+				result.setSuccess(true);
+			}
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.DB_ERROR);
+		}
+		return result;
 	}
 }

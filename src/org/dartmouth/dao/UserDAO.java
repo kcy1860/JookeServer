@@ -12,7 +12,7 @@ import org.dartmouth.domain.UserDO;
 public interface UserDAO {
 	Result insertUser(UserDO user);
 
-	int updateUser(Map<String, Object> params);
+	int updateUser(UserDO user);
 
 	int deleteUserByQuery(Map<String, Object> params);
 

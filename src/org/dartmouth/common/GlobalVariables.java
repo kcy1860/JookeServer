@@ -18,6 +18,7 @@ public interface GlobalVariables {
 		public static final String LOGIN_FAIL = "Wrong Username/Password";
 		public static final String SIGN_UP_DUPLICATE = "User Already Existed";
 		public static final String EVENT_USER_MISMATCH = "Permission Denied";
+		public static final String USER_NOT_EXIST = "User Doesn't Exist";
 	}
 	
 	public interface SIGN_UP_TYPE {

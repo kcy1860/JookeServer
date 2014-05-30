@@ -82,6 +82,8 @@ public class EventController {
 			while (!es.isEmpty()) {
 				EventDO ev = es.poll();
 				JSONObject ee = new JSONObject();
+				ee.put("event_mode", ev.getEvent_mode());
+				ee.put("allow_add", ev.getAllow_add());
 				ee.put("event_id", ev.getEvent_id());
 				ee.put("event_name", ev.getEvent_name());
 				ee.put("host_id", ev.getHost().getId().toString());

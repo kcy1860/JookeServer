@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
 		List<UserDO> list = query(map);
 		if (list.size() > 0) {
 			result.setSuccess(false);
-			result.setResultObj(-1);
+			result.setResultObj(-1L);
 			result.setMsg(GlobalVariables.RESPONSE_MESSAGES.SIGN_UP_DUPLICATE);
 			return result;
 		}
@@ -68,8 +68,26 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public int updateUser(Map<String, Object> params) {
-		return 0;
+	public int updateUser(UserDO user) {
+		StringBuffer sql = new StringBuffer(
+				"update user set user.gender=user.gender");
+		if (user.getFullname() != null) {
+			sql.append(", user.name='" + user.getFullname()+"'");
+		}
+		if (user.getInstagram_link() != null) {
+			sql.append(", user.instagramlink='" + user.getInstagram_link()+"'");
+		}
+		if (user.getFacebook_link() != null) {
+			sql.append(", user.facebooklink='" + user.getFacebook_link()+"'");
+		}
+		if (user.getTwitter_link() != null) {
+			sql.append(", user.twitterlink='" + user.getTwitter_link()+"'");
+		}
+		if (user.getProfile_img() != null) {
+			sql.append(", user.profile_img='" + user.getProfile_img()+"'");
+		}
+		sql.append(" where user.id=" + user.getId());
+		return jdbcTemplate.update(sql.toString());
 	}
 
 	@Override

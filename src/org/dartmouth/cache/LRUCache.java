@@ -1,5 +1,6 @@
 package org.dartmouth.cache;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -7,7 +8,9 @@ import java.util.HashMap;
  * @date May 23, 2014
  */
 
-public class LRUCache {
+public class LRUCache implements Serializable {
+
+	private static final long serialVersionUID = -5377838555777217387L;
 
 	protected HashMap<Object, Node> map;
 	protected DoubleLinkedList list;

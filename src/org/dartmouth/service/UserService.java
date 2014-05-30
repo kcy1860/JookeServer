@@ -14,6 +14,8 @@ public interface UserService {
 	Result addUser(UserDO user);
 
 	Result login(String usr, String pwd);
+	
+	Result update(UserDO user);
 
 	List<UserDO> findUser(Map<String, Object> query);
 }

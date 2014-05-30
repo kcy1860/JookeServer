@@ -118,4 +118,72 @@ public class UserController {
 		}
 	}
 
+	@RequestMapping(value = "/get_profile")
+	public void findPeople(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		JSONStringer stringer = new JSONStringer();
+		try {
+			Long userid = Long.valueOf(request.getParameter("userid"));
+			Map<String, Object> query = new HashMap<String, Object>();
+			query.put("id", userid);
+			List<UserDO> result = userService.findUser(query);
+			if (result.size() > 0) {
+				UserDO user = result.get(0);
+				stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+						.value(true).key("fullname").value(user.getFullname())
+						.key("instagram_link").value(user.getInstagram_link())
+						.key("facebook_link").value(user.getFacebook_link())
+						.key("twitter_link").value(user.getTwitter_link())
+						.key("profile_img").value(user.getProfile_img())
+						.endObject();
+			} else {
+				stringer.object()
+						.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+						.value(true)
+						.key(GlobalVariables.RESPONSE_KEYS.MSG)
+						.value(GlobalVariables.RESPONSE_MESSAGES.USER_NOT_EXIST)
+						.endObject();
+			}
+			response.getWriter().append(stringer.toString());
+		} catch (Exception e) {
+			stringer.object()
+					.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(false)
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(GlobalVariables.RESPONSE_MESSAGES.INVALID_PARAMETERS)
+					.endObject();
+			response.getWriter().append(stringer.toString());
+		}
+	}
+
+	@RequestMapping(value = "/edit_profile")
+	public void editProfile(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		JSONStringer stringer = new JSONStringer();
+		try {
+			UserDO user = new UserDO();
+			user.fillByRequest(request);
+			if (user.getId() == null) {
+				throw new Exception();
+			}
+			Result result = this.userService.update(user);
+
+			stringer.object().key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(result.isSuccess())
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(result.getMsg())
+					.endObject();
+
+			response.getWriter().append(stringer.toString());
+		} catch (Exception e) {
+			stringer.object()
+					.key(GlobalVariables.RESPONSE_KEYS.SUCCESS)
+					.value(false)
+					.key(GlobalVariables.RESPONSE_KEYS.MSG)
+					.value(GlobalVariables.RESPONSE_MESSAGES.INVALID_PARAMETERS)
+					.endObject();
+			response.getWriter().append(stringer.toString());
+		}
+	}
+
 }
