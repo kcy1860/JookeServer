@@ -84,7 +84,7 @@ public class EventController {
 			String name = request.getParameter("host_name");
 
 			ParticipantDO part = new ParticipantDO();
-			// only different with
+			// only difference with
 			// part.setHost_ip(host_ip);
 			event.setPc_ip(host_ip);
 			part.setId(host_id);
